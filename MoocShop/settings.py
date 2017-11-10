@@ -11,10 +11,19 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import sys
 
+import pymysql
+pymysql.install_as_MySQLdb()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# 插入apps 和 extra_app，在软件运行的时候回自动在此文件夹中搜寻
+sys.path.insert(0, BASE_DIR)
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'extra_app'))
 
+# 将默认的user替换为自定义的user
+AUTH_USER_MODEL = 'users.UserProfile'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -37,6 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'DjangoUeditor',
+    'xadmin',
+    'users',
+    'goods',
+    'trade',
+    'user_operation',
+
 ]
 
 MIDDLEWARE = [
@@ -76,8 +92,10 @@ WSGI_APPLICATION = 'MoocShop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'shop',
+        'USER': 'root',
+        'PASSWORD': 'root',
     }
 }
 
@@ -119,3 +137,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")

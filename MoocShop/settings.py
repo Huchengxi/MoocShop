@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'DjangoUeditor',
+    # xadmin需要使用的
+    'crispy_forms',
     'xadmin',
     'users',
     'goods',
@@ -95,7 +97,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'shop',
         'USER': 'root',
-        'PASSWORD': 'root',
+        # 'PASSWORD': 'root',
     }
 }
 

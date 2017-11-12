@@ -77,5 +77,5 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     queryset = Goods.objects.all()
     serializer_class = GoodsSerializer
-    # 定制的分页配置
+    # 定制的分页配置 啊
     pagination_class = GoodsPagination

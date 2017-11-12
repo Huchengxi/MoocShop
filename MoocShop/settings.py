@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'goods',
     'trade',
     'user_operation',
+    'rest_framework',
 
 ]
 
@@ -133,11 +134,25 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = False
+"""
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
+"""
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
+MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# rest_framework的配置
+REST_FRAMEWORK = {
+    # 分页配置 因为在view中已经定制分页，所以此设置废弃
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 10
+}

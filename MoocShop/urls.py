@@ -13,10 +13,55 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 # from django.contrib import admin
 from extra_app import xadmin
+# 设置media的访问路径
+from MoocShop.settings import MEDIA_ROOT
+from django.views.static import serve
+
+# from goods.views_base import GoodsListView
+# 引入framework的文档功能
+from rest_framework.documentation import include_docs_urls
+from goods.views import GoodsListViewSet
+
+# 引入神奇router
+from rest_framework.routers import DefaultRouter
+
+"""
+第一种重写url配置的方法
+goods_list = GoodsListViewSet.as_view({
+    # 将两种请求与此view绑定，前面就不用重写
+    get和post方法
+    'get': 'list',
+    # post请求，给前端提供上传商品的接口
+    'post': 'create',
+})
+"""
+# 第二种使用router配置url 的方法
+# 创建一个router对象
+router = DefaultRouter()
+
+# 配置goods的url
+router.register(r'goods', GoodsListViewSet, base_name="goods")
+
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
+    # 配置rest_framework的登陆url，和访问media资源的api
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')), url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
+
+    # 商品的列表页
+    # 基础的列表实现
+    # url(r'goods/$', GoodsListView.as_view()),
+
+    # 使用router所以废弃
+    # url(r'goods/$', GoodsListViewSet.as_view(), name='good-list'),
+
+    # 使用router的url配置
+    url(r'^', include(router.urls)),
+    # 配置文档功能
+    url(r'docs/', include_docs_urls(title='慕学生鲜'))
+
+    # rest_framework
 ]

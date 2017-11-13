@@ -9,7 +9,14 @@ from rest_framework import status
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import viewsets
+# 引入搜索模块
+from rest_framework import filters
+# 引入分页模块
 from rest_framework.pagination import PageNumberPagination
+# 引入过滤模块 还是django 的filter
+from django_filters.rest_framework import DjangoFilterBackend
+# 引入过滤类
+from .filters import GoodsFilter
 
 from goods.models import Goods
 
@@ -76,6 +83,43 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     本项目将使用的方式，配合Router使用
     """
     queryset = Goods.objects.all()
+    # 序列化
     serializer_class = GoodsSerializer
-    # 定制的分页配置 啊
+    # 定制的分页配置
     pagination_class = GoodsPagination
+
+    # 对查询集进行过滤操作，
+    """
+    方法一： 最基本的数据过滤
+    
+    # 获取django rest_framework 的 查询集 详见此模块的request和response对象
+    # 内置函数
+    def get_queryset(self):
+        # 只储存了sql脚本，不会把数据全部取出
+        queryset = Goods.objects.all()
+        price_min = self.request.query_params.get('price_min', 0)
+        if price_min:
+            queryset = queryset.filter(shop_price__gt=int(price_min))
+        return queryset
+    """
+    """
+    方法二，使用django_filter
+    """
+    # 配置django_filter
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    # 设置要过滤的字段 ,注意加s！！！！！！！
+    # 因为有了过滤类 支持模糊以及区间过滤所以废弃
+    # filter_fields = ('name', 'shop_price')
+    filter_class = GoodsFilter
+    # 配置商品的查询功能
+    # 在字段前可以加参数，^开头 =精确搜索 @全文搜索 $
+    search_fields = ('name', 'goods_brief', 'goods_desc')
+    # 设置排序的字段
+    ordering_fields = ('sold_num', 'add_time')
+
+
+
+
+
+
+

@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'trade',
     'user_operation',
     'rest_framework',
+    # 过滤模块， 注意加s
+    'django_filters',
 
 ]
 
@@ -98,7 +100,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'shop',
         'USER': 'root',
-        # 'PASSWORD': 'root',
+        'PASSWORD': 'root',
     }
 }
 
@@ -155,4 +157,8 @@ REST_FRAMEWORK = {
     # 分页配置 因为在view中已经定制分页，所以此设置废弃
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE': 10
+
+    # 过滤器设置，
+    # 'DEFAULT_FILTER_BACKENDS': (
+    # 'django_filters.rest_framework.DjangoFilterBackend'),
 }

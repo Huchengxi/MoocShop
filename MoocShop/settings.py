@@ -57,10 +57,16 @@ INSTALLED_APPS = [
     'rest_framework',
     # 过滤模块， 注意加s
     'django_filters',
+    # 配置允许跨域访问的模块
+    'corsheaders',
+    # 配置用户认证模块
+    # 'rest_framework.authtoken'
 
 ]
 
 MIDDLEWARE = [
+    # 配置允许跨域访问的模块
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -69,7 +75,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+# 允许跨域访问
+CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'MoocShop.urls'
 
 TEMPLATES = [
@@ -161,4 +168,9 @@ REST_FRAMEWORK = {
     # 过滤器设置，
     # 'DEFAULT_FILTER_BACKENDS': (
     # 'django_filters.rest_framework.DjangoFilterBackend'),
+    # 配置用户认证功能
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BaseAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
 }

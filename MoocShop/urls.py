@@ -23,7 +23,7 @@ from django.views.static import serve
 # from goods.views_base import GoodsListView
 # 引入framework的文档功能
 from rest_framework.documentation import include_docs_urls
-from goods.views import GoodsListViewSet
+from goods.views import GoodsListViewSet, CategoryViewset
 
 # 引入神奇router
 from rest_framework.routers import DefaultRouter
@@ -44,6 +44,8 @@ router = DefaultRouter()
 
 # 配置goods的url
 router.register(r'goods', GoodsListViewSet, base_name="goods")
+# 配置GoodsCategory的url
+router.register(r'categorys', CategoryViewset, base_name="categorys")
 
 
 urlpatterns = [

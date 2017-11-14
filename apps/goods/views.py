@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from .serializers import GoodsSerializer
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 # 引入rest_framework的状态码
@@ -17,8 +17,8 @@ from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 # 引入过滤类
 from .filters import GoodsFilter
-
-from goods.models import Goods
+from goods.models import Goods, GoodsCategory
+from .serializers import GoodsSerializer, CategorySerializer
 
 
 # 定制分页
@@ -118,7 +118,10 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     ordering_fields = ('sold_num', 'add_time')
 
 
-
+class CategoryViewset(mixins.RetrieveModelMixin, mixins.ListModelMixin,
+                          viewsets.GenericViewSet):
+    queryset = GoodsCategory.objects.all()
+    serializer_class = CategorySerializer
 
 
 

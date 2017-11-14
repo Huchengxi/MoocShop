@@ -2,11 +2,28 @@ __author__ = 'Christ'
 __date__ = '2017/11/12 0012 上午 3:42'
 
 from rest_framework import serializers
+from django.db.models import Q
 
 from goods.models import Goods, GoodsCategory
 
 
+class CategorySerializer3(serializers.ModelSerializer):
+    class Meta:
+        model = GoodsCategory
+        fields = "__all__"
+
+
+class CategorySerializer2(serializers.ModelSerializer):
+    sub_cat = CategorySerializer3(many=True)
+
+    class Meta:
+        model = GoodsCategory
+        fields = "__all__"
+
+
 class CategorySerializer(serializers.ModelSerializer):
+    sub_cat = CategorySerializer2(many=True)
+
     class Meta:
         model = GoodsCategory
         fields = "__all__"

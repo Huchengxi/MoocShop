@@ -16,3 +16,9 @@ todo:
 20, 21, 22 flask
 
 23, python高级,tornado, 简单工厂模式， 工厂模式， 装饰器的使用
+
+
+为了解决跨域问题，允许对服务器进行跨域访问
+pip isntall django-cors-headers
+
+新引入了用户认证模块，需要添加到app 并进行表的迁移和生成

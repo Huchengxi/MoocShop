@@ -22,3 +22,7 @@ todo:
 pip isntall django-cors-headers
 
 新引入了用户认证模块，需要添加到app 并进行表的迁移和生成
+
+新下载了jwt 的认证模块
+pip install djangorestframework-jwt
+

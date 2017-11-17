@@ -15,9 +15,11 @@ from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
 # 引入过滤模块 还是django 的filter
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.authentication import TokenAuthentication
+
 # 引入过滤类
 from .filters import GoodsFilter
-from goods.models import Goods, GoodsCategory
+from .models import Goods, GoodsCategory
 from .serializers import GoodsSerializer, CategorySerializer
 
 
@@ -87,6 +89,9 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = GoodsSerializer
     # 定制的分页配置
     pagination_class = GoodsPagination
+
+    # 防止公开页面也要认证token造成麻烦，在接口中验证
+    # authentication_classes = (TokenAuthentication,)
 
     # 对查询集进行过滤操作，
     """

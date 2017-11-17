@@ -24,6 +24,11 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'extra_app'))
 
 # 将默认的user替换为自定义的user
 AUTH_USER_MODEL = 'users.UserProfile'
+# 重写django自带的登录函数配置
+AUTHENTICATION_BACKENDS = (
+    'user.views.CustomBackend',
+)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -60,13 +65,14 @@ INSTALLED_APPS = [
     # 配置允许跨域访问的模块
     'corsheaders',
     # 配置用户认证模块
-    # 'rest_framework.authtoken'
+    'rest_framework.authtoken'
 
 ]
 
 MIDDLEWARE = [
     # 配置允许跨域访问的模块
     'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -172,5 +178,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BaseAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        # 配置jwt认证模式
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication'
+        # 为了防止公开页面也要验证，所以取消全局配置
+        # 'rest_framework.authentication.TokenAuthentication',
     )
-}
+ }

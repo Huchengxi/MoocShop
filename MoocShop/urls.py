@@ -24,7 +24,10 @@ from django.views.static import serve
 # 引入framework的文档功能
 from rest_framework.documentation import include_docs_urls
 from goods.views import GoodsListViewSet, CategoryViewset
-
+# 引入认证view
+from rest_framework.authtoken import views
+# 引入jwt认证模块
+from rest_framework_jwt.views import obtain_jwt_token
 # 引入神奇router
 from rest_framework.routers import DefaultRouter
 
@@ -47,12 +50,17 @@ router.register(r'goods', GoodsListViewSet, base_name="goods")
 # 配置GoodsCategory的url
 router.register(r'categorys', CategoryViewset, base_name="categorys")
 
+# router.register(r'users', UserViewset, base_name="users")
+
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
     # 配置rest_framework的登陆url，和访问media资源的api
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')), url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
-
+    # drf自带的token用户认证模式
+    url(r'^api-token-auth/', views.obtain_auth_token),
+    # jwt的认证接口,可以自己命名
+    url(r'^login/', obtain_jwt_token),
     # 商品的列表页
     # 基础的列表实现
     # url(r'goods/$', GoodsListView.as_view()),
